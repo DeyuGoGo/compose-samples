@@ -78,7 +78,7 @@ object Libs {
             const val uiTest = "androidx.compose.ui:ui-test-junit4:$version"
             const val uiUtil = "androidx.compose.ui:ui-util:${version}"
             const val viewBinding = "androidx.compose.ui:ui-viewbinding:$version"
-            const val compose = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha08"
+            const val constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha08"
         }
 
         object Navigation {

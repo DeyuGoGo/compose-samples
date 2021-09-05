@@ -30,7 +30,7 @@ import kotlinx.coroutines.delay
 fun TestLoadingScreen() {
     val (isShow, onShowChange) = rememberSaveable { mutableStateOf(true) }
     if (isShow) {
-        LaunchedEffect(key1 =  isShow, block = {
+        LaunchedEffect(key1 =  null, block = {
             delay(3000)
             onShowChange(false)
         })

@@ -87,7 +87,7 @@ dependencies {
     implementation Libs.AndroidX.Compose.runtime
     implementation Libs.AndroidX.Compose.runtimeLivedata
     implementation Libs.AndroidX.Compose.viewBinding
-    implementation Libs.AndroidX.Compose.compose
+    implementation Libs.AndroidX.Compose.constraintlayout
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha06"
 
     implementation Libs.Accompanist.insets
