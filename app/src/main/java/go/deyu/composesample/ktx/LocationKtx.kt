@@ -21,10 +21,8 @@ import kotlin.coroutines.resumeWithException
 suspend fun FusedLocationProviderClient.awaitLastLocation(): Location =
     suspendCancellableCoroutine { continuation ->
         lastLocation.addOnSuccessListener { location ->
-            Timber.e("awaitLastLocation addOnSuccessListener $location")
             continuation.resume(location)
         }.addOnFailureListener {
-            Timber.e("awaitLastLocation error $it")
             continuation.resumeWithException(it)
         }
     }

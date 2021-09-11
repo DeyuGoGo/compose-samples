@@ -91,5 +91,4 @@ fun ShowLocationScreen(viewModel: ShowLocationViewModel) {
             }
         }
     }
-
 }

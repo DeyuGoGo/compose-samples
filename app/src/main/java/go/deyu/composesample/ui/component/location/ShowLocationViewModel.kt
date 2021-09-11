@@ -1,6 +1,7 @@
 package go.deyu.composesample.ui.component.location
 
 import android.location.Location
+import android.os.Looper
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -12,8 +13,8 @@ import com.intersense.myneighbor.navi.NavigationManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import go.deyu.composesample.ktx.awaitLastLocation
 import go.deyu.composesample.ktx.locationFlow
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -31,11 +32,19 @@ class ShowLocationViewModel @Inject constructor(
     }
 
     fun getLastLocation() {
-        viewModelScope.launch {
-            val locaiton = fusedLocationProviderClient.awaitLastLocation()
-            Timber.d("getLastLocation Location : $locaiton")
+        CoroutineScope(Job() + Dispatchers.Main + CoroutineExceptionHandler { context, throwable ->
 
-            myLocation.value = locaiton
+        })
+        viewModelScope.launch {
+            var location: Location
+            delay(10 * 1000)
+            withContext(Dispatchers.Main) {
+                delay(10 * 1000)
+                location = fusedLocationProviderClient.awaitLastLocation()
+            }
+            location.run {
+                myLocation.value = this
+            }
         }
     }
 
