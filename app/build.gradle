@@ -131,6 +131,11 @@ dependencies {
     kapt Libs.Hilt.hiltDaggerCompilerKapt
     implementation Libs.Hilt.hiltNavigationCompose
 
+
+//    Location
+    implementation 'com.google.android.gms:play-services-location:18.0.0'
+
+
 //    Testing
     androidTestImplementation Libs.junit
     androidTestImplementation Libs.AndroidX.Test.core

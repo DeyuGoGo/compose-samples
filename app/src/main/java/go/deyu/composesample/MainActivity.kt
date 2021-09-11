@@ -1,133 +1,95 @@
 package go.deyu.composesample
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.activity.viewModels
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.insets.navigationBarsHeight
-import com.google.accompanist.insets.navigationBarsPadding
-import go.deyu.composesample.ui.loading.LoadingView
-import go.deyu.composesample.ui.loading.TestLoadingScreen
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.intersense.myneighbor.navi.NavigationCommand
+import com.intersense.myneighbor.navi.NavigationDirections
+import com.intersense.myneighbor.navi.NavigationManager
+import dagger.hilt.android.AndroidEntryPoint
+import go.deyu.composesample.ui.main.MainScreen
+import go.deyu.composesample.ui.main.MainViewModel
 import go.deyu.composesample.ui.theme.ComposeSampleTheme
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var navigationManager: NavigationManager
+
+    val viewModel: MainViewModel by viewModels()
 
     enum class MainTabs(
         val title: String,
         val icon: ImageVector,
-        val route: String
+        val route: NavigationCommand
     ) {
-        BUTTON_PAGE("按鈕", icon = Icons.Default.SmartButton, "buttons"),
-        ANIMATION_PAGE("動畫", Icons.Default.Animation, "animation"),
-        COMPONENT_PAGE("元件", Icons.Default.ViewCompact, "component")
+        BUTTON_PAGE("按鈕", icon = Icons.Default.SmartButton, NavigationDirections.buttons_root),
+        ANIMATION_PAGE("動畫", Icons.Default.Animation, NavigationDirections.animation_root),
+        COMPONENT_PAGE("元件", Icons.Default.ViewCompact, NavigationDirections.component_root)
     }
 
 
+    @ExperimentalPermissionsApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeSampleTheme {
+                val navController = rememberNavController()
                 Surface(color = MaterialTheme.colors.background) {
-                    val navController = rememberNavController()
-                    var selectedTab by mutableStateOf(MainTabs.BUTTON_PAGE)
-                    Scaffold(
-                        bottomBar = {
-                            BottomNavigation(
-                                Modifier.navigationBarsHeight(additional = 56.dp)
-                            ) {
-                                MainTabs.values().forEach { tab ->
-                                    BottomNavigationItem(
-                                        icon = {
-                                            Icon(tab.icon, contentDescription = null)
-                                        },
-                                        label = {
-                                            Text(text = tab.title.uppercase())
-                                        },
-                                        selected = tab == selectedTab,
-                                        onClick = {
-                                            navController.navigate(tab.route)
-                                            selectedTab = tab
-                                        },
-                                        alwaysShowLabel = false,
-                                        selectedContentColor = MaterialTheme.colors.secondary,
-                                        unselectedContentColor = LocalContentColor.current,
-                                        modifier = Modifier
-                                            .navigationBarsPadding()
-                                            .clip(RoundedCornerShape(20.dp))
-                                    )
-                                }
+                    MainScreen(navController = navController, viewModel = viewModel)
+                }
+                navigationManager.commands.collectAsState().value.also { command ->
+                    when (command) {
+                        NavigationDirections.none -> {
+
+                        }
+                        NavigationDirections.back -> {
+                            navController.popBackStack()
+                        }
+                        NavigationDirections.open_location_permission -> {
+                            openAppLocationPermission()
+                        }
+                        else -> {
+                            if (command.destination.isNotEmpty()) navController.navigate(command.destination) {
+                                this.launchSingleTop = true
                             }
                         }
-                    ) {
-                        MainNavHost(navController = navController, modifier = Modifier.padding(it))
                     }
                 }
             }
         }
     }
 
-    @Composable
-    fun MainNavHost(navController: NavHostController, modifier: Modifier) {
-        NavHost(
-            navController = navController,
-            startDestination = MainTabs.BUTTON_PAGE.route,
-            modifier = modifier
+    private fun openAppLocationPermission() {
+        val intent = Intent()
+        intent.action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+        val uri = Uri.fromParts(
+            "package",
+            BuildConfig.APPLICATION_ID,
+            null
         )
-        {
-            composable(route = MainTabs.BUTTON_PAGE.route) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Button(onClick = {
-                        //沒幹麼
-                    }) {
-                        Text("按鈕")
-                    }
-                }
-            }
-            composable(route = MainTabs.ANIMATION_PAGE.route) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize()
-                ){
-                    TestLoadingScreen()
-                }
-            }
-            composable(route = MainTabs.COMPONENT_PAGE.route) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize()
-                ){
-                    Text("不知道組合三毀")
-                }
-            }
-        }
+        intent.data = uri
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        navigationManager.navigate(NavigationDirections.none)
+    }
+
 }
 
 
