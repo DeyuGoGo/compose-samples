@@ -43,7 +43,6 @@ android {
         viewBinding true
     }
     composeOptions {
-        kotlinCompilerVersion = "1.5.10"
         kotlinCompilerExtensionVersion Libs.AndroidX.Compose.version
     }
     packagingOptions {
@@ -131,6 +130,10 @@ dependencies {
     kapt Libs.Hilt.hiltDaggerCompilerKapt
     implementation Libs.Hilt.hiltNavigationCompose
 
+//    Work
+    implementation Libs.AndroidX.Work.work
+    implementation Libs.AndroidX.Work.mutiProcess
+
 
 //    Location
     implementation 'com.google.android.gms:play-services-location:18.0.0'
@@ -138,20 +141,22 @@ dependencies {
 
 //    Testing
     androidTestImplementation Libs.junit
-    androidTestImplementation Libs.AndroidX.Test.core
-    androidTestImplementation Libs.AndroidX.Test.rules
-    androidTestImplementation Libs.AndroidX.Test.Ext.junit
-    androidTestImplementation Libs.AndroidX.Compose.uiTest
+
+    androidTestImplementation Libs.AndroidX.AndroidTest.core
+    androidTestImplementation Libs.AndroidX.AndroidTest.rules
+    androidTestImplementation Libs.AndroidX.AndroidTest.junit
     androidTestImplementation Libs.AndroidX.AndroidTest.archCore
+    androidTestImplementation Libs.AndroidX.AndroidTest.composeManifest
     androidTestImplementation Libs.AndroidX.AndroidTest.composeUi
     androidTestImplementation Libs.AndroidX.AndroidTest.composeUiJunit
     androidTestImplementation Libs.AndroidX.AndroidTest.espressContrib
     androidTestImplementation Libs.AndroidX.AndroidTest.espressoCore
+    androidTestImplementation Libs.AndroidX.AndroidTest.work
     testImplementation Libs.junit
 
     androidTestImplementation Libs.Hilt.Test.hilt
     kaptAndroidTest Libs.Hilt.Test.hiltCompilerKapt
     kaptAndroidTest Libs.Hilt.Test.hiltDaggerCompilerKapt
 
-
+    implementation 'com.google.guava:guava:29.0-android'
 }

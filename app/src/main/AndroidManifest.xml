@@ -14,7 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ComposeSample">
         <activity
-            android:name=".blog.SampleActivity"
+            android:name=".blog.LocationSampleActivity"
+            android:exported="true" />
+        <activity
+            android:name=".blog.WorkerSampleActivity"
             android:exported="true" />
         <activity
             android:name=".MainActivity"

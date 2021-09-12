@@ -50,6 +50,7 @@ object Libs {
         object Work{
             const val version = "2.5.0"
             const val work = "androidx.work:work-runtime-ktx:$version"
+            const val mutiProcess =  "androidx.work:work-multiprocess:$version"
 
         }
 
@@ -75,7 +76,6 @@ object Libs {
             const val runtimeLivedata = "androidx.compose.runtime:runtime-livedata:$version"
             const val tooling = "androidx.compose.ui:ui-tooling:$version"
             const val test = "androidx.compose.ui:ui-test:$version"
-            const val uiTest = "androidx.compose.ui:ui-test-junit4:$version"
             const val uiUtil = "androidx.compose.ui:ui-util:${version}"
             const val viewBinding = "androidx.compose.ui:ui-viewbinding:$version"
             const val constraintlayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha08"
@@ -88,29 +88,33 @@ object Libs {
         }
 
         object Test {
-            private const val version = "1.3.0"
-            const val core = "androidx.test:core:$version"
-            const val rules = "androidx.test:rules:$version"
-            const val composeUi = "androidx.compose.ui:ui-test-manifest:${Compose.version}"
 
             object Ext {
-                private const val version = "1.1.2"
-                const val junit = "androidx.test.ext:junit-ktx:$version"
             }
 
         }
 
         object AndroidTest{
             // Testing dependencies
-
+            private const val junitextversion = "1.1.2"
+            private const val version = "1.3.0"
             const val  espressoVersion = "3.4.0"
             const val  coreTestingVersion = "2.1.0"
+            const val core = "androidx.test:core:$version"
+            const val rules = "androidx.test:rules:$version"
+            const val uiTest = "androidx.compose.ui:ui-test-junit4:${Compose.version}"
+
+            const val work =  "androidx.work:work-testing:${Work.version}"
             const val archCore = "androidx.arch.core:core-testing:$coreTestingVersion"
             const val espressoCore = "androidx.test.espresso:espresso-core:$espressoVersion"
             const val espressContrib = "androidx.test.espresso:espresso-contrib:$espressoVersion"
+            const val composeManifest = "androidx.compose.ui:ui-test-manifest:${Compose.version}"
 
             const val composeUi = "androidx.compose.ui:ui-test:${Compose.version}"
-            const val composeUiJunit = "androidx.compose.ui:ui-test-junit4:$${Compose.version}"
+            const val composeUiJunit = "androidx.compose.ui:ui-test-junit4:${Compose.version}"
+
+            const val junit = "androidx.test.ext:junit-ktx:${junitextversion}"
+
 
         }
         object Lifecycle {
