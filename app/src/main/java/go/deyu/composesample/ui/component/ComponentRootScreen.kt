@@ -11,13 +11,17 @@ import androidx.compose.ui.Modifier
 import com.intersense.myneighbor.navi.NavigationDirections
 
 @Composable
-fun ComponentRootScreen(viewModel: ComponentViewModel){
+fun ComponentRootScreen(viewModel: ComponentViewModel) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxSize()
-    ) {        TextButton(onClick = {viewModel.navigate(NavigationDirections.component_location)}) {
+    ) {
+        TextButton(onClick = { viewModel.navigate(NavigationDirections.component_location) }) {
             Text("Location")
+        }
+        TextButton(onClick = { viewModel.navigate(NavigationDirections.component_dialog) }) {
+            Text("Dialog")
         }
     }
 }

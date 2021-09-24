@@ -45,6 +45,12 @@ object NavigationDirections {
         override val arguments = emptyList<NamedNavArgument>()
         override val destination = "component_location"
     }
+
+    val component_dialog = object : NavigationCommand {
+        override val arguments = emptyList<NamedNavArgument>()
+        override val destination = "component_dialog"
+    }
+
     val open_location_permission = object : NavigationCommand {
         override val arguments = emptyList<NamedNavArgument>()
         override val destination = "open_location_permission"

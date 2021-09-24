@@ -3,6 +3,7 @@ package go.deyu.composesample
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Trace
 import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -45,6 +46,7 @@ class MainActivity : ComponentActivity() {
     @ExperimentalPermissionsApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Trace.beginSection("DeyuTrace")
         setContent {
             ComposeSampleTheme {
                 val navController = rememberNavController()
@@ -71,6 +73,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        Trace.endSection()
     }
 
     private fun openAppLocationPermission() {

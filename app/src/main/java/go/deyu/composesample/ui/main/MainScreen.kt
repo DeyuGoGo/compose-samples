@@ -24,6 +24,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.intersense.myneighbor.navi.NavigationDirections
 import go.deyu.composesample.MainActivity
 import go.deyu.composesample.ui.component.ComponentRootScreen
+import go.deyu.composesample.ui.component.dialog.TestDialogScreen
 import go.deyu.composesample.ui.component.location.ShowLocationScreen
 import go.deyu.composesample.ui.loading.TestLoadingScreen
 
@@ -119,6 +120,9 @@ fun MainNavHost(navController: NavHostController, modifier: Modifier) {
             }
             composable(route = NavigationDirections.component_location.destination) {
                 ShowLocationScreen(viewModel = hiltViewModel())
+            }
+            composable(route = NavigationDirections.component_dialog.destination) {
+                TestDialogScreen()
             }
         }
 
